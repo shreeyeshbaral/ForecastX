@@ -126,7 +126,7 @@ function animate() {
         }
     });
 
-    // 3. THE HEARTBEAT: This line makes the animation run 60 times per second
+    // 3. This line makes the animation run 60 times per second
     requestAnimationFrame(animate);
 }
 
