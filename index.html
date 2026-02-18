@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForecastX | Ultimate Weather Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="weather-sunny">
+
+    <canvas id="weather-canvas"></canvas>
+    <div id="lightning-flash"></div>
+
+    <div class="container py-3 py-md-5">
+        <div class="row justify-content-center mb-4">
+            <div class="col-12 col-md-8 col-lg-5">
+                <div class="input-group glass-input shadow-lg">
+                    <input type="text" id="cityInput" class="form-control border-0 bg-transparent text-white" placeholder="Search any city...">
+                    <button class="btn btn-light rounded-pill px-4 fw-bold" id="searchBtn">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 g-md-4">
+            <div class="col-12 col-lg-4">
+                <div class="glass-card p-4 h-100 main-hero text-white">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h1 id="cityName" class="display-6 fw-bold">---</h1>
+                            <p id="weatherDesc" class="fs-5 opacity-75">---</p>
+                        </div>
+                        <div id="mainIcon" class="display-4">☀️</div>
+                    </div>
+                    <div class="display-1 fw-bold my-3" id="mainTemp">--°</div>
+                    <div class="d-flex gap-3 opacity-75">
+                        <span>H: <span id="maxTemp">--</span>°</span>
+                        <span>L: <span id="minTemp">--</span>°</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-8">
+                <div class="row g-3">
+                    <div class="col-6 col-md-4">
+                        <div class="glass-card p-3 h-100 text-white text-center">
+                            <small class="opacity-50">Wind Status</small>
+                            <div class="compass-box my-2 mx-auto">
+                                <div class="compass-needle" id="windNeedle"></div>
+                            </div>
+                            <div class="fw-bold"><span id="windSpeed">0</span> <small>km/h</small></div>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="glass-card p-3 h-100 text-white text-center">
+                            <small class="opacity-50">UV Index</small>
+                            <div class="uv-meter my-3">
+                                <div id="uvPointer" class="uv-dot"></div>
+                            </div>
+                            <div class="h3 fw-bold m-0" id="uvValue">0</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <div class="glass-card p-3 h-100 text-white text-center">
+                            <small class="opacity-50">Rain Chance</small>
+                            <div class="h2 fw-bold my-2" id="rainChance">--%</div>
+                            <p class="small opacity-50 m-0">Precipitation</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <div class="glass-card p-3 h-100 text-white">
+                            <small class="opacity-50 px-2">Sunrise & Sunset</small>
+                            <div class="sun-arc-box py-2">
+                                <svg viewBox="0 0 100 50" class="sun-svg">
+                                    <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="2,2"/>
+                                    <circle id="sunDot" cx="10" cy="50" r="3" fill="#ff9d6c"/>
+                                </svg>
+                            </div>
+                            <div class="d-flex justify-content-between px-2 small">
+                                <span><i class="bi bi-sunrise"></i> <span id="sunrise">--:--</span></span>
+                                <span><i class="bi bi-sunset"></i> <span id="sunset">--:--</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <div class="glass-card p-3 h-100 d-flex justify-content-around align-items-center text-white">
+                            <div><small class="opacity-50">Humidity</small><div class="h3 fw-bold" id="humidity">--%</div></div>
+                            <div class="vr opacity-25"></div>
+                            <div><small class="opacity-50">Pressure</small><div class="h3 fw-bold" id="pressure">--</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="glass-card p-4 text-white">
+                    <h5 class="fw-bold mb-4">5-Day Forecast</h5>
+                    <div class="d-flex gap-3 overflow-auto pb-2" id="forecastGrid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

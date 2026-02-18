@@ -1,0 +1,52 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    transition: background 1.5s ease;
+    overflow-x: hidden;
+    background: #121212;
+}
+
+/* Backgrounds */
+.weather-sunny { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.weather-rainy { background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%); }
+.weather-snowy { background: linear-gradient(135deg, #83a4d4 0%, #b6fbff 100%); }
+.weather-night { background: linear-gradient(135deg, #090909 0%, #2c3e50 100%); }
+.weather-storm { background: linear-gradient(135deg, #141e30 0%, #243b55 100%); }
+
+#weather-canvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
+
+#lightning-flash {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: white; opacity: 0; z-index: 1; pointer-events: none;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.glass-input { background: rgba(255, 255, 255, 0.15); border-radius: 50px !important; }
+
+
+.compass-box { width: 70px; height: 70px; border: 2px dashed rgba(255,255,255,0.2); border-radius: 50%; position: relative; }
+.compass-needle { position: absolute; width: 2px; height: 30px; background: #ff9d6c; left: 50%; top: 5px; transform-origin: bottom center; }
+
+.uv-meter { height: 6px; background: linear-gradient(90deg, #5ee7b7, #fcd34d, #ef4444); border-radius: 10px; position: relative; }
+.uv-dot { position: absolute; top: -5px; width: 16px; height: 16px; background: white; border-radius: 50%; }
+
+.sun-arc-box { width: 100%; max-width: 200px; margin: 0 auto; }
+.sun-svg { width: 100%; }
+
+#forecastGrid::-webkit-scrollbar { display: none; }
+.forecast-card { min-width: 110px; background: rgba(255,255,255,0.05); border-radius: 20px; transition: transform 0.2s; }
+.forecast-card:hover { transform: scale(1.05); }
+
+/* used media queries for phone and tab friendly */ 
+@media (max-width: 768px) {
+    .display-1 { font-size: 4rem; }
+    .main-hero { text-align: center; }
+}
