@@ -34,7 +34,7 @@ async function fetchWeather(city) {
 function updateUI(data, label) {
     const { current, daily } = data;
     const weather = interpretWMO(current.weather_code);
-
+    
     document.getElementById('cityName').innerText = label;
     document.getElementById('mainTemp').innerText = `${Math.round(current.temperature_2m)}°`;
     document.getElementById('maxTemp').innerText = Math.round(daily.temperature_2m_max[0]);
@@ -72,9 +72,9 @@ function initParticles(mode) {
         particles.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            // Rain is fast (15), Snow is slow (2), Stars are still (0)
+            // Rain is fast (15), Snow is slow (1), Stars are still (0)
             speed: mode === 'rain' ? (10 + Math.random() * 5) : 
-                   mode === 'snow' ? (1 + Math.random() * 2) : 
+                   mode === 'snow' ? (1 + Math.random() * 0) : 
                    mode === 'storm' ? (15 + Math.random() * 10) : 0,
             size: mode === 'rain' ? 2 : (mode === 'stars' ? Math.random() * 2 : 4),
             opacity: Math.random(),
