@@ -4,7 +4,6 @@ const apiKey = '8677f5ce7a23e35ca4107d4b10b414c6';
 let particles = [];
 let animationFrame;
 
-
 // 1. Setup
 function initCanvas() {
     canvas.width = window.innerWidth;
@@ -51,30 +50,43 @@ function updateUI(data, label) {
     document.getElementById('sunrise').innerText = new Date(daily.sunrise[0]).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
     document.getElementById('sunset').innerText = new Date(daily.sunset[0]).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 
-    // Background & Animation
+    // Background & Animation Logic
     let mode = weather.type.toLowerCase();
     if(current.is_day === 0 && (mode === 'sunny' || mode === 'cloudy')) mode = 'stars';
     
-    document.body.className = current.is_day === 0 ? 'weather-night' : `weather-${mode === 'stars' ? 'sunny' : mode}`;
-    if(mode === 'storm') document.body.className = 'weather-storm';
+    
+    const body = document.body;
+    
+    // Reset classes
+    body.className = ''; 
+    body.classList.remove('sunny-text-mode');
+
+    // 1. Set Background Image Class
+    body.classList.add(current.is_day === 0 ? 'weather-night' : `weather-${mode === 'stars' ? 'sunny' : mode}`);
+    if(mode === 'storm') body.classList.add('weather-storm');
+
+    // 2. CONDITION: IF Sunny (Code 0) and Day (1), turn text BLACK
+    if (current.weather_code === 0 && current.is_day === 1) {
+        body.classList.add('sunny-text-mode');
+    }
+   
 
     initParticles(mode);
     renderForecast(daily);
 }
 
-// 3. Animation Engine (Rain, Snow, Sunny, Storm, Stars)
-
+// 3. Animation Engine
 function initParticles(mode) {
-    particles = []; // Clear old particles
+    particles = []; 
     const count = (mode === 'stars' || mode === 'sunny') ? 120 : 100;
     
     for (let i = 0; i < count; i++) {
         particles.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            // Rain is fast (15), Snow is slow (1), Stars are still (0)
+           
             speed: mode === 'rain' ? (10 + Math.random() * 5) : 
-                   mode === 'snow' ? (1 + Math.random() * 0) : 
+                   mode === 'snow' ? (0.5 + Math.random() * 0.5) : 
                    mode === 'storm' ? (15 + Math.random() * 10) : 0,
             size: mode === 'rain' ? 2 : (mode === 'stars' ? Math.random() * 2 : 4),
             opacity: Math.random(),
@@ -84,7 +96,6 @@ function initParticles(mode) {
 }
 
 function animate() {
-    // 1. Clear the canvas for the new frame
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     particles.forEach(p => {
@@ -92,41 +103,34 @@ function animate() {
         ctx.beginPath();
         
         if (p.mode === 'rain' || p.mode === 'storm') {
-            // MOVEMENT: Vertical fall
             ctx.rect(p.x, p.y, 1, 20); 
-            p.y += p.speed; // Increment Y to create motion
+            p.y += p.speed;
         } 
         else if (p.mode === 'snow') {
-            // MOVEMENT: Drifting fall
             ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
-            p.y += p.speed; // Vertical motion
-            p.x += Math.sin(Date.now() * 0.002 + p.y) * 0.5; // Horizontal sway
+            p.y += p.speed; 
+            p.x += Math.sin(Date.now() * 0.001 + p.y * 0.01) * 0.5; 
         } 
         else if (p.mode === 'stars') {
-            // MOVEMENT: Still but twinkling
             ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
             p.opacity = 0.2 + Math.abs(Math.sin(Date.now() * 0.001 + p.x));
         }
         else if (p.mode === 'sunny') {
-            // MOVEMENT: Slow floating orbs
             ctx.arc(p.x, p.y, p.size * 5, 0, Math.PI * 2);
-            p.y -= 0.3; // Floating upwards
+            p.y -= 0.3; 
         }
 
         ctx.fill();
 
-        // 2. RECYCLING: If particle goes off screen, reset to top
         if (p.y > canvas.height) {
             p.y = -20;
             p.x = Math.random() * canvas.width;
         }
-        // For sunny orbs floating up
         if (p.y < -50 && p.mode === 'sunny') {
             p.y = canvas.height + 20;
         }
     });
 
-    // 3. This line makes the animation run 60 times per second
     requestAnimationFrame(animate);
 }
 
@@ -144,11 +148,11 @@ function renderForecast(daily) {
         const date = new Date(daily.time[i]).toLocaleDateString('en', {weekday: 'short'});
         const w = interpretWMO(daily.weather_code[i]);
         grid.innerHTML += `
-            <div class="forecast-card p-3 text-center text-white flex-fill">
-                <div class="small opacity-50 mb-1">${date}</div>
+            <div class="forecast-card p-3 text-center flex-fill">
+                <div class="small mb-1">${date}</div>
                 <div class="fs-2 my-1">${w.emoji}</div>
                 <div class="fw-bold">${Math.round(daily.temperature_2m_max[i])}°</div>
-                <div class="small opacity-50">UV ${Math.round(daily.uv_index_max[i])}</div>
+                <div class="small">UV ${Math.round(daily.uv_index_max[i])}</div>
             </div>`;
     }
 }

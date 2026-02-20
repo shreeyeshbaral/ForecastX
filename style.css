@@ -50,36 +50,50 @@ body {
     outline: none !important;
     box-shadow: none !important;
 }
-/* Targets the placeholder text inside the search box */
+
 .glass-input input::placeholder, 
 .landing-search input::placeholder {
     color: rgba(245, 245, 245, 0.8) !important; 
     opacity: 1; 
 }
 
-/* Also for WebKit browsers like Chrome/Safari/Edge */
-.glass-input input::-webkit-input-placeholder {
-    color: rgba(245, 245, 245, 0.8) !important;
-}
+/* --- TEXT VISIBILITY LOGIC --- */
 
-/* Targets labels like "Wind Status", "Humidity", "Sunrise" etc. */
+/* DEFAULT: White text for all weather conditions */
+body, 
 .opacity-50, 
 .opacity-75, 
 .small, 
 small, 
-h6 {
-    color: #ffffff !important; /* Force pure white */
-    opacity: 1 !important;    /* Remove transparency so it doesn't fade into the blue */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Adds contrast against light backgrounds */
-    font-weight: 500; /* Makes thin text a bit more readable */
-}
-
-/* Forecast Days visibility */
-.forecast-card .small {
+h6, 
+#cityName, 
+#mainTemp, 
+#weatherDesc {
     color: #ffffff !important;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    opacity: 1 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: 500;
 }
 
+/* SUNNY EXCEPTION: Force everything to black when it's sunny */
+.sunny-text-mode,
+.sunny-text-mode #cityName, 
+.sunny-text-mode #mainTemp, 
+.sunny-text-mode #weatherDesc,
+.sunny-text-mode .glass-card *,      /* Targets all main dashboard labels/values */
+.sunny-text-mode .forecast-card * {  /* Targets all text inside the 5-day forecast */
+    color: #000000 !important;
+    text-shadow: none !important; 
+    opacity: 1 !important;
+}
+
+/* Optional: Keep the search input easy to read in sunny mode */
+.sunny-text-mode .glass-input input,
+.sunny-text-mode .glass-input i {
+    color: #000000 !important;
+}
+
+/* ----------------------------- */
 
 .compass-box { width: 70px; height: 70px; border: 2px dashed rgba(255,255,255,0.2); border-radius: 50%; position: relative; }
 .compass-needle { position: absolute; width: 2px; height: 30px; background: #ff9d6c; left: 50%; top: 5px; transform-origin: bottom center; }
@@ -94,10 +108,8 @@ h6 {
 .forecast-card { min-width: 110px; background: rgba(255,255,255,0.05); border-radius: 20px; transition: transform 0.2s; }
 .forecast-card:hover { transform: scale(1.05); }
 
- 
 @media (max-width: 768px) {
     .display-1 { font-size: 4rem; }
     .main-hero { text-align: center; }
-    
     .small { font-size: 0.85rem; }
 }
